@@ -13,4 +13,10 @@ public interface TaiKhoanDoanhNghiepDAO extends JpaRepository<TaiKhoanDoanhNghie
 
 	@Query(value = "SELECT * FROM TAIKHOANDN o WHERE o.MASOTHUE = ?1", nativeQuery = true)
 	TaiKhoanDoanhNghiep loginDoanhNghiep(String masothue);
+
+	@Query(value = "SELECT * FROM TAIKHOANDN o WHERE o.EMAIL = ?1", nativeQuery = true)
+	TaiKhoanDoanhNghiep findByEmail(String email);
+
+	@Query(value = "select top 1 * from taikhoandn order by IDTAIKHOANDN desc", nativeQuery = true)
+	TaiKhoanDoanhNghiep getIdLonNhat();
 }

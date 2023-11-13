@@ -13,4 +13,8 @@ public interface SanGiaoDichService {
 	public SanGiaoDich findbyId(Integer id);
 
 	public String countSGD();
+	
+	public List<SanGiaoDich> findByNguoiTao(Integer nguoiTao);
+	
+	List<SanGiaoDich> sapXepSanGiaoDich();
 }

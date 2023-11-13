@@ -15,4 +15,8 @@ public interface TaiKhoanDoanhNghiepService {
 	public String countDN();
 
 	public TaiKhoanDoanhNghiep loginDoanhNghiep(String masothue);
+	
+	public TaiKhoanDoanhNghiep findByEmail(String email);
+	
+	public TaiKhoanDoanhNghiep getIdLonNhat();
 }

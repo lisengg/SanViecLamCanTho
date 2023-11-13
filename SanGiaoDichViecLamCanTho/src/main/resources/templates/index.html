@@ -1,4 +1,4 @@
-q<!doctype html>
+<!doctype html>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
@@ -70,6 +70,7 @@ q<!doctype html>
         #cellPaiChart {
             height: 160px;
         }
+        .opacity:hover{opacity:0.6}
     </style>
 </head>
 
@@ -119,6 +120,9 @@ q<!doctype html>
                     <li>
                         <a href="/qlisan"> <i class="menu-icon ti-stats-up"></i>Sàn giao dịch của bạn</a>
                     </li>
+                     <li>
+                        <a href="/thongke"> <i class="menu-icon ti-server"></i>Thống kê & dữ liệu</a>
+                    </li>
                     </th:block>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -139,7 +143,13 @@ q<!doctype html>
             <div class="top-right">
                 <div class="header-menu">
                 <div class="float-left" style="margin-top: 15px;margin-left: 5px">
-                    <p th:text="${username}"></p>
+                    <p th:unless="${#httpServletRequest.remoteUser}" th:text="${username}"></p>
+                    <th:block th:if="${tknld}">
+                    <p th:text="${tknld}"></p>
+                    </th:block>
+                    <th:block th:if="${tkdn}">
+                  	<p th:if="${tkdn}" th:text="${tkdn}"></p>
+                    </th:block>
                     </div>
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true"
@@ -148,9 +158,16 @@ q<!doctype html>
                         </a>
                         
                         <div class="user-menu dropdown-menu">
-                            <a class="nav-link" href="#"><i class="fa fa- user"></i>Tài khoản của tôi</a>
+                        <th:block th:unless="${#httpServletRequest.remoteUser}">
+                            <a class="nav-link" th:href="@{/dangnhap}"><i class="fa fa- user"></i>Đăng nhập</a>
 
+                            <a class="nav-link" th:href="@{/dangky}"><i class="fa fa-power -off" ></i>Đăng ký</a>
+                            </th:block>
+                        <th:block th:if="${#httpServletRequest.remoteUser}">
+                            <a th:if="${#request.isUserInRole('NLD')}" th:href="@{|/chinhsuanld|}" class="nav-link" href="#"><i class="fa fa- user"></i>Tài khoản của tôi</a>
+							<a th:if="${#request.isUserInRole('DOANHNGHIEP')}" th:href="@{|/chinhsuadn|}" class="nav-link" href="#"><i class="fa fa- user"></i>Tài khoản của tôi</a>
                             <a class="nav-link" th:href="@{/logoff}"><i class="fa fa-power -off" ></i>Đăng xuất</a>
+                            </th:block>
                         </div>
                     </div>
                     
@@ -173,7 +190,7 @@ q<!doctype html>
                             <div class="card-body">
                                 <div class="stat-widget-five">
                                     <div class="stat-icon dib flat-color-1">
-                                        <i class="pe-7s-portfolio"></i>
+                                        <a th:href="@{|/sangiaodich|}" class="pe-7s-portfolio"></a>
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
@@ -191,7 +208,7 @@ q<!doctype html>
                             <div class="card-body">
                                 <div class="stat-widget-five">
                                     <div class="stat-icon dib flat-color-2">
-                                        <i class="pe-7s-users"></i>
+                                        <a th:href="@{|/tonghopdn|}" class="pe-7s-users"></a>
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
@@ -231,7 +248,7 @@ q<!doctype html>
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
-                                            <div class="stat-text"><span class="count" th:text="${nguoiThamGia}"></span></div>
+                                            <divx class="stat-text"><span class="count" th:text="${nguoiThamGia}"></span></div>
                                             <div class="stat-heading">SỐ LAO ĐỘNG THAM GIA</div>
                                         </div>
                                     </div>
@@ -256,32 +273,34 @@ q<!doctype html>
                                             <!-- Data -->
                                             <div class="d-flex mb-3">
                                                 <a href="">
-                                                    <img th:src="@{|/images/${p.BAITUYENDUNG.TAIKHOANDOANHNGHIEP.LOGO}|}" class="border rounded-circle me-2"
+                                                    <img th:src="@{|/images/${p.TAIKHOANDOANHNGHIEP.LOGO}|}" class="border rounded-circle me-2"
                                                         alt="Avatar" style="height: 40px" />
                                                 </a>
                                                 <div>
                                                     <a href="" class="text-dark mb-0">
-                                                        <strong th:text="${p.BAITUYENDUNG.TAIKHOANDOANHNGHIEP.TENDN}">  </strong>
+                                                        <strong th:text="${p.TAIKHOANDOANHNGHIEP.TENDN}">  </strong>
                                                     </a>
-                                                   <!--  <a href="" class="text-muted d-block" style="margin-top: -6px">
-                                                        <small>10h</small>
-                                                    </a> -->
+                                                    <a href="" class="text-muted d-block" style="margin-top: -6px">
+                                                        <small th:text="${#dates.format(p.NGAYDANG, 'dd-MM-yyyy')}"></small>
+                                                    </a>
                                                 </div>
                                             </div>
                                             <!-- Description -->
                                             <div>
-
-                                            	<p th:text="${p.BAITUYENDUNG.TIEUDE}" style="color: black;font-size: 15px" ></p>
+                                            <div>
+                                            
+                                            </div>
+                                            	<p th:text="${p.TIEUDE}" style="color: black;font-size: 15px" ></p>
                                                 <p style="color: black;" >Mô tả công việc :</p>
-                                                <p style="color: black;" th:text="${p.BAITUYENDUNG.MOTACONGVIEC}"></p>
+                                                <p style="color: black;" th:text="${p.MOTACONGVIEC}"></p>
                                                 <p style="color: black;">Yêu cầu :</p>
-                                                 <p style="color: black;" th:text="${p.BAITUYENDUNG.YEUCAU}"></p>
-                                                <a href="" style="color: blue">Xem chi tiết công việc</a>
+                                                 <p style="color: black;" th:text="${p.YEUCAU}"></p>
+                                                <a th:href="@{|/baiviet/${p.IDBAITUYENDUNG}|}" style="color: blue">Xem chi tiết công việc</a>
                                             </div>
                                                                                     <!-- Media -->
                                         <div class="bg-image hover-overlay ripple rounded-0 text-center"
                                             data-mdb-ripple-color="light">
-                                            <img th:src="@{|/images/${p.BAITUYENDUNG.HINHANH}|}">
+                                            <img class="opacity" th:src="@{|/images/${p.HINHANH}|}">
                                             <a href="#!">
                                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)">
                                                 </div>
@@ -303,69 +322,7 @@ q<!doctype html>
                 </div>
 
 
-                <div class="modal fade none-border" id="event-modal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                                <h4 class="modal-title"><strong>Add New Event</strong></h4>
-                            </div>
-                            <div class="modal-body"></div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default waves-effect"
-                                    data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-success save-event waves-effect waves-light">Create
-                                    event</button>
-                                <button type="button" class="btn btn-danger delete-event waves-effect waves-light"
-                                    data-dismiss="modal">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /#event-modal -->
-                <!-- Modal - Calendar - Add Category -->
-                <div class="modal fade none-border" id="add-category">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                                <h4 class="modal-title"><strong>Add a category </strong></h4>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="control-label">Category Name</label>
-                                            <input class="form-control form-white" placeholder="Enter name" type="text"
-                                                name="category-name" />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="control-label">Choose Category Color</label>
-                                            <select class="form-control form-white" data-placeholder="Choose a color..."
-                                                name="category-color">
-                                                <option value="success">Success</option>
-                                                <option value="danger">Danger</option>
-                                                <option value="info">Info</option>
-                                                <option value="pink">Pink</option>
-                                                <option value="primary">Primary</option>
-                                                <option value="warning">Warning</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default waves-effect"
-                                    data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-danger waves-effect waves-light save-category"
-                                    data-dismiss="modal">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /#add-category -->
+              
             </div>
             <!-- .animated -->
         </div>

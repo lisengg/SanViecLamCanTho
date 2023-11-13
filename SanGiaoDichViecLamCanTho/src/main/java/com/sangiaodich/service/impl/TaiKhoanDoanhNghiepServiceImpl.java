@@ -38,4 +38,16 @@ public class TaiKhoanDoanhNghiepServiceImpl implements TaiKhoanDoanhNghiepServic
 		return taiKhoanDNDAO.loginDoanhNghiep(masothue);
 	}
 
+	@Override
+	public TaiKhoanDoanhNghiep findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return taiKhoanDNDAO.findByEmail(email);
+	}
+
+	@Override
+	public TaiKhoanDoanhNghiep getIdLonNhat() {
+		// TODO Auto-generated method stub
+		return taiKhoanDNDAO.getIdLonNhat();
+	}
+
 }

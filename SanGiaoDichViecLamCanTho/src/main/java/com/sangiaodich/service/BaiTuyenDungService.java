@@ -13,4 +13,8 @@ public interface BaiTuyenDungService {
 	public BaiTuyenDung findById(Integer id);
 
 	public String countBTD();
+	
+	public List<BaiTuyenDung> sapXepBangTin();
+	
+	List<BaiTuyenDung> findByTaiKHoan(Integer idTaiKhoan);
 }

@@ -13,4 +13,10 @@ public interface TaiKhoanNguoiLaoDongDAO extends JpaRepository<TaiKhoanNguoiLaoD
 
 	@Query(value = "SELECT * FROM TAIKHOANNLD o WHERE o.cccd=?1", nativeQuery = true)
 	TaiKhoanNguoiLaoDong loginNLD(String cccd);
+	
+	@Query(value = "SELECT * FROM TAIKHOANNLD o WHERE o.email=?1", nativeQuery = true)
+	TaiKhoanNguoiLaoDong findByEmail(String email);
+	
+	@Query(value = "select top 1 * from taikhoannld order by IDTAIKHOAN desc",nativeQuery = true)
+	TaiKhoanNguoiLaoDong getIdLonNhat();
 }

@@ -33,4 +33,16 @@ public class SanGiaoDichServiceImpl implements SanGiaoDichService {
 		return sanGiaoDichDao.countSGD();
 	}
 
+	@Override
+	public List<SanGiaoDich> findByNguoiTao(Integer nguoiTao) {
+		// TODO Auto-generated method stub
+		return sanGiaoDichDao.findByNguoiTao(nguoiTao);
+	}
+
+	@Override
+	public List<SanGiaoDich> sapXepSanGiaoDich() {
+		// TODO Auto-generated method stub
+		return sanGiaoDichDao.sapXepSanGiaoDich();
+	}
+
 }

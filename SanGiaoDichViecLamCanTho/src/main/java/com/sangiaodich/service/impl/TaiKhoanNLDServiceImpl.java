@@ -37,4 +37,16 @@ public class TaiKhoanNLDServiceImpl implements TaiKhoanNguoiLaoDongService{
 		return dao.loginNLD(cccd);
 	}
 
+	@Override
+	public TaiKhoanNguoiLaoDong fingByEmail(String email) {
+		// TODO Auto-generated method stub
+		return dao.findByEmail(email);
+	}
+
+	@Override
+	public TaiKhoanNguoiLaoDong getIdLonNhat() {
+		// TODO Auto-generated method stub
+		return dao.getIdLonNhat();
+	}
+
 }

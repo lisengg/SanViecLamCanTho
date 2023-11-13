@@ -32,4 +32,16 @@ public class BaiTuyenDungServiceImpl implements BaiTuyenDungService{
 		return baiTuyenDungDao.countBTD();
 	}
 
+	@Override
+	public List<BaiTuyenDung> sapXepBangTin() {
+		// TODO Auto-generated method stub
+		return baiTuyenDungDao.sapXepBangTin();
+	}
+
+	@Override
+	public List<BaiTuyenDung> findByTaiKHoan(Integer idTaiKhoan) {
+		// TODO Auto-generated method stub
+		return baiTuyenDungDao.findByTaiKHoan(idTaiKhoan);
+	}
+
 }

@@ -85,7 +85,7 @@
                 margin: 0 auto;
                 background-color: #fff;
                 border: 1px solid rgba(0, 0, 0, 0.1);
-
+}
                 .form-signin-heading,
                 .checkbox {
                     margin-bottom: 30px;
@@ -113,7 +113,7 @@
                     border-top-left-radius: 0;
                     border-top-right-radius: 0;
                 }
-            }
+            
 
             @media (min-width: 1025px) {
                 .h-custom {
@@ -156,12 +156,12 @@
 
 <body>
     <!-- Left Panel (menu)-->
-    <aside id="left-panel" class="left-panel">
+      <aside id="left-panel" class="left-panel">
         <nav class="navbar navbar-expand-sm navbar-default">
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a href="index.html"><i class="menu-icon fa fa-laptop"></i>Trang chủ</a>
+                        <a href="/"><i class="menu-icon fa fa-laptop"></i>Trang chủ</a>
                     </li>
                     <li class="menu-title">Chức năng</li><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
@@ -171,22 +171,17 @@
                             aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Giới thiệu</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-television"></i><a href="tables-basic.html">Giới thiệu hệ thống</a></li>
-                            <li><i class="fa fa-window-maximize"></i><a href="tables-data.html">Hướng dẫn sử dụng</a>
-                            </li>
+                            <li><i class="fa fa-window-maximize"></i><a href="tables-data.html">Hướng dẫn sử dụng</a></li>
                         </ul>
 
                     </li>
-
-                    <li>
-                        <a href="sangiaodich.html"> <i class="menu-icon ti-stats-up"></i>Sàn giao dịch</a>
+                     <th:block th:if="${#httpServletRequest.remoteUser}">
+                     <li>
+                        <a href="/sangiaodich"> <i class="menu-icon ti-stats-up"></i>Sàn giao dịch</a>
                     </li>
-                    <!--  <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Forms</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-basic.html">Basic Form</a></li>
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Advanced Form</a></li>
-                        </ul>
-                    </li> -->
+                    </th:block>
+					<th:block th:unless="${#httpServletRequest.remoteUser}">
+                   
                     <li class="menu-title">Tài khoản</li>
 
                     <li>
@@ -195,6 +190,8 @@
                     <li>
                         <a href="/dangky"> <i class="menu-icon ti-id-badge"></i>Đăng ký</a>
                     </li>
+                    </th:block>
+                    <th:block th:if="${#request.isUserInRole('DOANHNGHIEP')}">
                     <li class="menu-title">Quản lý</li>
 
                     <li>
@@ -203,6 +200,7 @@
                     <li>
                         <a href="/qlisan"> <i class="menu-icon ti-stats-up"></i>Sàn giao dịch của bạn</a>
                     </li>
+                    </th:block>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
@@ -228,9 +226,18 @@
                         </a>
 
                         <div class="user-menu dropdown-menu">
+                                                
+                        <th:block th:unless="${#httpServletRequest.remoteUser}">
+                            <a class="nav-link" th:href="@{/dangnhap}"><i class="fa fa- user"></i>Đăng nhập</a>
+
+                            <a class="nav-link" th:href="@{/dangky}"><i class="fa fa-power -off" ></i>Đăng ký</a>
+                            </th:block>
+                        <th:block th:if="${#httpServletRequest.remoteUser}">
                             <a class="nav-link" href="#"><i class="fa fa- user"></i>Tài khoản của tôi</a>
 
-                            <a class="nav-link" href="#"><i class="fa fa-power -off"></i>Đăng xuất</a>
+                            <a class="nav-link" th:href="@{/logoff}"><i class="fa fa-power -off" ></i>Đăng xuất</a>
+                            </th:block>
+                       
                         </div>
                     </div>
 
@@ -312,26 +319,23 @@
                                             <div class="p-5">
                                                 <h3 class="fw-normal mb-5">Thông tin liên lạc</h3>
                                                 <div class="row">
-                                                    <div class="col-md-6 mb-4 pb-2">
-
+                           				<div class="col-md-12 mb-4 pb-2">
                                                         <div class="form-outline form-white">
-                                                            <label class="form-label" for="form3Examplev2"
-                                                                >Tỉnh/Thành phố:(*)</label>
-                                                            <select class="custom-select">
-                                                                <option value="1">Nam</option>
-                                                                <option value="2">Nữ</option>
+                                                            <label class="form-label" for="form3Examplev2" 
+                                                                >Tỉnh/Thành phố:</label>
+                                                            <select class="custom-select" id="city">
+                                                                <option value="" selected>Chọn tỉnh thành</option>   
                                                             </select>
                                                         </div>
 
                                                     </div>
-                                                    <div class="col-md-6 mb-4 pb-2">
+                                                    <div class="col-md-12 mb-4 pb-2">
 
                                                         <div class="form-outline form-white">
                                                             <label class="form-label" for="form3Examplev2"
                                                                 style="font-size: 15px;">Quận/Huyện:(*)</label>
-                                                            <select class="custom-select">
-                                                                <option value="1">Nam</option>
-                                                                <option value="2">Nữ</option>
+                                                            <select class="custom-select" id="district">
+                                                                <option value="" selected>Chọn quận huyện</option>
                                                             </select>
                                                         </div>
 
@@ -340,9 +344,8 @@
                                                
                                                 <div class="mb-4 pb-2">
                                                     <label class="form-label" for="form3Examplev2">Phường/Xã:(*)</label>
-                                                    <select class="custom-select">
-                                                        <option value="1">Nam</option>
-                                                        <option value="2">Nữ</option>
+                                                    <select class="custom-select" id="ward">
+                                                        <option value="" selected>Chọn phường xã</option>
                                                     </select>
                                                 </div>
 
@@ -419,7 +422,49 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.js"></script>
     <script src="assets/js/init/fullcalendar-init.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+	var citis = document.getElementById("city");
+var districts = document.getElementById("district");
+var wards = document.getElementById("ward");
+var Parameter = {
+  url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
+  method: "GET", 
+  responseType: "application/json", 
+};
+var promise = axios(Parameter);
+promise.then(function (result) {
+  renderCity(result.data);
+});
 
+function renderCity(data) {
+  for (const x of data) {
+    citis.options[citis.options.length] = new Option(x.Name, x.Id);
+  }
+  citis.onchange = function () {
+    district.length = 1;
+    ward.length = 1;
+    if(this.value != ""){
+      const result = data.filter(n => n.Id === this.value);
+
+      for (const k of result[0].Districts) {
+        district.options[district.options.length] = new Option(k.Name, k.Id);
+      }
+    }
+  };
+  district.onchange = function () {
+    ward.length = 1;
+    const dataCity = data.filter((n) => n.Id === citis.value);
+    if (this.value != "") {
+      const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+
+      for (const w of dataWards) {
+        wards.options[wards.options.length] = new Option(w.Name, w.Id);
+      }
+    }
+  };
+}
+	</script>
 </body>
 
 </html>

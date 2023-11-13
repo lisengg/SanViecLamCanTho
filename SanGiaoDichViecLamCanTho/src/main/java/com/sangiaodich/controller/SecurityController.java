@@ -2,14 +2,24 @@ package com.sangiaodich.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sangiaodich.entity.BangTin;
 import com.sangiaodich.entity.TaiKhoanDoanhNghiep;
+import com.sangiaodich.entity.TaiKhoanNguoiLaoDong;
 import com.sangiaodich.service.BaiTuyenDungService;
 import com.sangiaodich.service.BangTinService;
 import com.sangiaodich.service.SanGiaoDichService;
@@ -34,35 +44,18 @@ public class SecurityController {
 	@Autowired 
 	TaiKhoanNguoiLaoDongService nguoiLDService;
 	
+	@Autowired
+	HttpSession session;
+	
 	@RequestMapping("/security/login/form")
 	public String loginForm(Model model) {
 		model.addAttribute("message", "Vui lòng đăng nhập!");
 		return "dangnhap";
 	}
 	
-	@RequestMapping("/success")
+	@GetMapping("/success")
 	public String loginSuccess(Model model) {
-		List<BangTin> bangTin = bangTinService.findAll();
-		String sanGiaoDich = sanGiaoDichService.countSGD();
-		String doanhNghiep = doanhNghiepService.countDN();
-		String baiTD = baiTuyenDungService.countBTD();
-		String nguoiTG = nguoiLDService.countNTG();
-		String username;
-		List<TaiKhoanDoanhNghiep> userDN = doanhNghiepService.findAll();
-		
-		if(userDN!=null) {
-			username = userDN.get(0).getTENDN();
-		}else {
-			username = userDN.get(0).getHOVATEN();
-		}
-		
-		model.addAttribute("username",username);
-		model.addAttribute("form", bangTin);
-		model.addAttribute("dn",doanhNghiep);
-		model.addAttribute("sgd", sanGiaoDich);
-		model.addAttribute("btd", baiTD);
-		model.addAttribute("nguoiThamGia", nguoiTG);
-		return "index";
+		return "redirect:/";
 	}
 	
 	@RequestMapping("/errorlogin")
@@ -73,24 +66,12 @@ public class SecurityController {
 	
 	@RequestMapping("/security/unauthoritied")
 	public String unauthoritied(Model model) {
-		model.addAttribute("message", "Không có quyền truy xuất!");
-		return "index";
+		
+		return "redirect:/";
 	}
 	
 	@RequestMapping("/logoffSuccess")
 	public String logoffSuccess(Model model) {
-		List<BangTin> bangTin = bangTinService.findAll();
-		String sanGiaoDich = sanGiaoDichService.countSGD();
-		String doanhNghiep = doanhNghiepService.countDN();
-		String baiTD = baiTuyenDungService.countBTD();
-		String nguoiTG = nguoiLDService.countNTG();
-		
-		model.addAttribute("form", bangTin);
-		model.addAttribute("dn",doanhNghiep);
-		model.addAttribute("sgd", sanGiaoDich);
-		model.addAttribute("btd", baiTD);
-		model.addAttribute("nguoiThamGia", nguoiTG);
-		
-		return "index";
+		return "redirect:/";
 	}
 }

@@ -34,6 +34,7 @@ public class SanGiaoDich {
 	String MUCLUONG;
 	String TRINHDO;
 	String LINKPHONGVAN;
+	String KHOAPHONG;
 	
 	@ManyToOne
     @JoinColumn(name="IDNGUOITAO")
